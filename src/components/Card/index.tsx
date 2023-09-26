@@ -4,15 +4,47 @@ interface CardProps {
   pokemon: {
     id: number;
     name: string;
-    type: string;
+    types: string[]; // Utiliser un tableau de types
     generation: string;
   };
 }
+
+const typeColors: { [key: string]: string } = {
+  Normal: 'brown',
+  Feu: 'red',
+  Eau: 'blue',
+  Plante: 'green',
+  Electrik: 'yellow',
+  Glace: 'lightblue',
+  Combat: 'orange',
+  Poison: 'purple',
+  Sol: 'brown',
+  Vol: 'lightblue',
+  Psy: 'pink',
+  Insecte: 'green',
+  Roche: 'brown',
+  Spectre: 'purple',
+  Dragon: 'lightblue',
+  Acier: 'grey',
+  Tenebres: 'black',
+  Fée: 'pink',
+  // ...
+};
+
+const getTypeColors = (types: string[]): string[] => {
+  return types.map((type) => typeColors[type] || 'black');
+};
 
 const CardTitle = styled.h2`
   font-size: 1.5em;
   text-align: center;
   color: palevioletred;
+`;
+
+const CardText = styled.p`
+  font-size: 1em;
+  text-align: center;
+  color: #999;
 `;
 
 const CardContainer = styled.div`
@@ -32,6 +64,14 @@ const CardContainer = styled.div`
   }
 `;
 
+const CardType = styled.div`
+  font-size: 1em;
+  text-align: center;
+  margin-bottom: 10px;
+  /* Utilisez la fonction pour obtenir la couleur en fonction du type */
+  color: ${(props) => props.color};
+`;
+
 const CardImage = styled.img`
   width: 100%;
   height: 200px;
@@ -45,6 +85,12 @@ const Card: React.FC<CardProps> = ({ pokemon }) => (
       alt={pokemon.name}
     />
     <CardTitle>{pokemon.name}</CardTitle>
+    {pokemon.types.map((type, index) => (
+      <CardType key={index} color={getTypeColors(pokemon.types)[index]}>
+        {type}
+      </CardType>
+    ))}
+    <CardText>N°{pokemon.id}</CardText>
   </CardContainer>
 );
 
@@ -52,7 +98,7 @@ Card.defaultProps = {
   pokemon: {
     id: 0,
     name: '',
-    type: '',
+    types: [],
     generation: '',
   },
 };

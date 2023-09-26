@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchBox from '../../components/SearchBox';
 import Filter from '../../components/Filter';
+import Loader from '../../utils/style/loader';
 
 interface Pokemon {
   id: number;
@@ -29,6 +30,7 @@ const Pokedex: React.FC = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,11 +46,13 @@ const Pokedex: React.FC = () => {
         }));
 
         setPokemons(pokemonData);
+        setLoading(false);
       } catch (error) {
         console.error(
           "Une erreur s'est produite lors du chargement des données.",
           error
         );
+        setLoading(false);
       }
     };
 
@@ -88,20 +92,24 @@ const Pokedex: React.FC = () => {
         handleChange={handleChange}
       />
 
-      <CardContainer>
-        {filteredPokemons.map((pokemon) => (
-          <Link key={pokemon.name} to={`/pokemon/${pokemon.name}`}>
-            <Card
-              pokemon={{
-                id: pokemon.id,
-                name: pokemon.name,
-                type: pokemon.types.join(', '),
-                generation: pokemon.generation,
-              }}
-            />
-          </Link>
-        ))}
-      </CardContainer>
+      {loading ? (
+        <Loader /> // Affichez le loader lorsque loading est true
+      ) : (
+        <CardContainer>
+          {filteredPokemons.map((pokemon) => (
+            <Link key={pokemon.name} to={`/pokemon/${pokemon.name}`}>
+              <Card
+                pokemon={{
+                  id: pokemon.id,
+                  name: pokemon.name,
+                  types: pokemon.types, // Laissez les types comme un tableau
+                  generation: pokemon.generation,
+                }}
+              />
+            </Link>
+          ))}
+        </CardContainer>
+      )}
     </div>
   );
 };

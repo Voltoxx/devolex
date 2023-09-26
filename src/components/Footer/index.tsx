@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const FooterContainer = styled.footer`
+  bottom: 0;
+  width: 100%;
+  height: 60px;
   background-color: #000;
   padding: 20px;
   text-align: center;
