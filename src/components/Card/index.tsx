@@ -4,30 +4,30 @@ interface CardProps {
   pokemon: {
     id: number;
     name: string;
-    types: string[]; // Utiliser un tableau de types
+    types: string[];
     generation: string;
   };
 }
 
 const typeColors: { [key: string]: string } = {
-  Normal: 'brown',
+  Normal: 'BlanchedAlmond',
   Feu: 'red',
-  Eau: 'blue',
-  Plante: 'green',
-  Electrik: 'yellow',
+  Eau: 'MediumBlue',
+  Plante: 'ForestGreen',
+  Électrik: 'gold',
   Glace: 'lightblue',
   Combat: 'orange',
   Poison: 'purple',
   Sol: 'brown',
   Vol: 'lightblue',
   Psy: 'pink',
-  Insecte: 'green',
+  Insecte: 'GreenYellow',
   Roche: 'brown',
   Spectre: 'purple',
   Dragon: 'lightblue',
   Acier: 'grey',
   Tenebres: 'black',
-  Fée: 'pink',
+  Fée: 'HotPink',
   // ...
 };
 

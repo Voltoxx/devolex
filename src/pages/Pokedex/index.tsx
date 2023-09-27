@@ -13,10 +13,17 @@ interface Pokemon {
   generation: string;
 }
 
+const PageContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+`;
+
 const PageTitle = styled.h1`
-  color: red;
+  color: #333;
   font-size: 2em;
   text-align: center;
+  margin-bottom: 20px;
 `;
 
 const CardContainer = styled.div`
@@ -26,9 +33,16 @@ const CardContainer = styled.div`
   justify-items: center;
 `;
 
+const NoMatch = styled.p`
+  color: red;
+  font-size: 1.2em;
+  text-align: center;
+`;
+
 const Pokedex: React.FC = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState<string>('');
+  const [searchById, setSearchById] = useState<number | null>(null);
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -60,7 +74,10 @@ const Pokedex: React.FC = () => {
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    const input = e.target.value;
+    setSearch(input);
+    const searchId = parseInt(input);
+    setSearchById(isNaN(searchId) ? null : searchId);
   };
 
   const handleFilterChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -69,9 +86,12 @@ const Pokedex: React.FC = () => {
 
   const filteredPokemons = pokemons.filter((pokemon) => {
     const lowerCaseName = pokemon.name.toLowerCase();
+    const isMatchingName = lowerCaseName.includes(search.toLowerCase());
+    const isMatchingId =
+      searchById !== null && pokemon.id.toString().includes(search);
 
     return (
-      lowerCaseName.includes(search.toLowerCase()) &&
+      (isMatchingName || isMatchingId) &&
       (filter === '' ||
         pokemon.types.includes(filter) ||
         pokemon.generation === filter)
@@ -79,38 +99,44 @@ const Pokedex: React.FC = () => {
   });
 
   return (
-    <div>
-      <PageTitle>Voici le Devolex</PageTitle>
+    <PageContainer>
+      <PageTitle>Le Devolex</PageTitle>
 
       <Filter
-        placeholder="Selectionnez un filtre"
+        placeholder="Sélectionnez un filtre"
         handleFilterChange={handleFilterChange}
       />
 
       <SearchBox
-        placeholder="Rechercher un Pokémon"
+        placeholder="Rechercher un Pokémon par son nom ou son ID"
         handleChange={handleChange}
       />
 
       {loading ? (
         <Loader /> // Affichez le loader lorsque loading est true
       ) : (
-        <CardContainer>
-          {filteredPokemons.map((pokemon) => (
-            <Link key={pokemon.name} to={`/pokemon/${pokemon.name}`}>
-              <Card
-                pokemon={{
-                  id: pokemon.id,
-                  name: pokemon.name,
-                  types: pokemon.types, // Laissez les types comme un tableau
-                  generation: pokemon.generation,
-                }}
-              />
-            </Link>
-          ))}
-        </CardContainer>
+        <>
+          {filteredPokemons.length === 0 ? (
+            <NoMatch>Aucun Pokémon trouvé 😲</NoMatch>
+          ) : (
+            <CardContainer>
+              {filteredPokemons.map((pokemon) => (
+                <Link key={pokemon.name} to={`/pokemon/${pokemon.name}`}>
+                  <Card
+                    pokemon={{
+                      id: pokemon.id,
+                      name: pokemon.name,
+                      types: pokemon.types, // Laissez les types comme un tableau
+                      generation: pokemon.generation,
+                    }}
+                  />
+                </Link>
+              ))}
+            </CardContainer>
+          )}
+        </>
       )}
-    </div>
+    </PageContainer>
   );
 };
 

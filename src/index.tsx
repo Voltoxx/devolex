@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Pokedex from './pages/Pokedex';
+import Suggestion from './pages/Suggestion';
 import Error from './components/Error';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -19,7 +20,12 @@ const GlobalStyle = createGlobalStyle`
         margin: 0;
         padding: 0;
         background-color: #f3f2ff;
-        height: 100vh;
+    }
+    li {
+        list-style: none;
+    }
+    ul {
+        padding: 0;
     }
 `;
 
@@ -31,6 +37,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pokedex" element={<Pokedex />} />
+        <Route path="/suggestion" element={<Suggestion />} />
         <Route path="*" element={<Error />} />
       </Routes>
       <Footer />

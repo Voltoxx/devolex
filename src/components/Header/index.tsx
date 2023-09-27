@@ -34,7 +34,7 @@ function Header() {
       <StyledNav>
         <StyledLink to="/">Accueil</StyledLink>
         <StyledLink to="/pokedex">Pokedex</StyledLink>
-        <StyledLink to="/contact">Contact</StyledLink>
+        <StyledLink to="/suggestion">Suggestion</StyledLink>
       </StyledNav>
     </StyledHeader>
   );

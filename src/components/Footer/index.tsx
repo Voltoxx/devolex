@@ -10,10 +10,19 @@ const FooterContainer = styled.footer`
   text-align: center;
 `;
 
-const FooterLink = styled(Link)`
+const FooterLink = styled.a`
   color: #fff;
   text-decoration: none;
   margin: 0 10px;
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+`;
+
+const LinkDevolis = styled.a`
+  color: #fff;
+  text-decoration: none;
   &:hover {
     color: #fff;
     text-decoration: underline;
@@ -28,10 +37,22 @@ const FooterText = styled.p`
 function Footer() {
   return (
     <FooterContainer>
-      <FooterLink to="https://arthurphilippe.fr/">Mentions légales</FooterLink>
-      <FooterLink to="https://arthurphilippe.fr/">Contact</FooterLink>
-      <FooterLink to="https://arthurphilippe.fr/">FAQ</FooterLink>
-      <FooterText>© 2023 Devolex - Tous droits réservés</FooterText>
+      <FooterLink href="https://arthurphilippe.fr/" target="_blank">
+        Mentions légales
+      </FooterLink>
+      <FooterLink href="https://arthurphilippe.fr/" target="_blank">
+        Contact
+      </FooterLink>
+      <FooterLink href="https://arthurphilippe.fr/" target="_blank">
+        FAQ
+      </FooterLink>
+      <FooterText>
+        © 2023{' '}
+        <LinkDevolis href="https://www.devolis.com/" target="_blank">
+          Devolis
+        </LinkDevolis>{' '}
+        - Tous droits réservés
+      </FooterText>
     </FooterContainer>
   );
 }
