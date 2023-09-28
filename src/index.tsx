@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Pokedex from './pages/Pokedex';
 import Suggestion from './pages/Suggestion';
+import Pokemon from './pages/Pokemon';
+import Team from './pages/Team';
 import Error from './components/Error';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -38,6 +40,8 @@ ReactDOM.render(
         <Route path="/" element={<Home />} />
         <Route path="/pokedex" element={<Pokedex />} />
         <Route path="/suggestion" element={<Suggestion />} />
+        <Route path="/pokemon/:name" element={<Pokemon />} />
+        <Route path="/team" element={<Team />} />
         <Route path="*" element={<Error />} />
       </Routes>
       <Footer />

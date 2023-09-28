@@ -21,7 +21,7 @@ const PageContainer = styled.div`
 
 const PageTitle = styled.h1`
   color: #333;
-  font-size: 2em;
+  font-size: 3em;
   text-align: center;
   margin-bottom: 20px;
 `;
@@ -29,7 +29,7 @@ const PageTitle = styled.h1`
 const CardContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1.2rem;
+  grid-gap: 1.5rem;
   justify-items: center;
 `;
 
@@ -113,7 +113,7 @@ const Pokedex: React.FC = () => {
       />
 
       {loading ? (
-        <Loader /> // Affichez le loader lorsque loading est true
+        <Loader />
       ) : (
         <>
           {filteredPokemons.length === 0 ? (
@@ -126,7 +126,7 @@ const Pokedex: React.FC = () => {
                     pokemon={{
                       id: pokemon.id,
                       name: pokemon.name,
-                      types: pokemon.types, // Laissez les types comme un tableau
+                      types: pokemon.types,
                       generation: pokemon.generation,
                     }}
                   />

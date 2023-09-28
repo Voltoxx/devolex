@@ -24,11 +24,10 @@ const typeColors: { [key: string]: string } = {
   Insecte: 'GreenYellow',
   Roche: 'brown',
   Spectre: 'purple',
-  Dragon: 'lightblue',
+  Dragon: 'darkpurple',
   Acier: 'grey',
   Tenebres: 'black',
   Fée: 'HotPink',
-  // ...
 };
 
 const getTypeColors = (types: string[]): string[] => {
@@ -55,7 +54,8 @@ const CardContainer = styled.div`
   border-radius: 3px;
   padding: 20px;
   margin: 20px;
-  width: 200px;
+  width: 170px;
+  height: 350px;
   transition: 0.3s;
   background-color: #fff;
   &:hover {
@@ -81,7 +81,7 @@ const CardImage = styled.img`
 const Card: React.FC<CardProps> = ({ pokemon }) => (
   <CardContainer>
     <CardImage
-      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
       alt={pokemon.name}
     />
     <CardTitle>{pokemon.name}</CardTitle>
