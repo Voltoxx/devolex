@@ -145,7 +145,7 @@ const DIV = styled.div`
 const DEFAULT_MESSAGE = 'Aucune information disponible';
 
 function Pokemon() {
-  const { name: pokemonName } = useParams();
+  const { id: PokemonId } = useParams();
   const [pokemon, setPokemon] = useState<PokemonData>({
     id: 0,
     name: '',
@@ -171,7 +171,7 @@ function Pokemon() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://pokebuildapi.fr/api/v1/pokemon/${pokemonName}`
+          `https://pokebuildapi.fr/api/v1/pokemon/${PokemonId}`
         );
         const data = await response.json();
 
@@ -182,7 +182,7 @@ function Pokemon() {
     };
 
     fetchData();
-  }, [pokemonName]);
+  }, [PokemonId]);
 
   useEffect(() => {
     const fetchPrevPokemon = async () => {
@@ -230,6 +230,7 @@ function Pokemon() {
   return (
     <div>
       <PageContainer>
+        <CustomLink to="/pokedex">➡️ Retour au pokedex ⬅️</CustomLink>
         <PokemonCard>
           <PokemonName>{name}</PokemonName>
           <PokemonImage src={image} alt={name} />
@@ -306,7 +307,6 @@ function Pokemon() {
           </DIV>
         </PokemonCard>
       </PageContainer>
-      <CustomLink to="/pokedex">Retour au pokedex</CustomLink>
     </div>
   );
 }

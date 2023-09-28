@@ -121,7 +121,7 @@ const Pokedex: React.FC = () => {
           ) : (
             <CardContainer>
               {filteredPokemons.map((pokemon) => (
-                <Link key={pokemon.name} to={`/pokemon/${pokemon.name}`}>
+                <Link key={pokemon.name} to={`/pokemon/${pokemon.id}`}>
                   <Card
                     pokemon={{
                       id: pokemon.id,

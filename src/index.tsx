@@ -40,7 +40,7 @@ ReactDOM.render(
         <Route path="/" element={<Home />} />
         <Route path="/pokedex" element={<Pokedex />} />
         <Route path="/suggestion" element={<Suggestion />} />
-        <Route path="/pokemon/:name" element={<Pokemon />} />
+        <Route path="/pokemon/:id" element={<Pokemon />} />
         <Route path="/team" element={<Team />} />
         <Route path="*" element={<Error />} />
       </Routes>
