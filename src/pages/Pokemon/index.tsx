@@ -27,6 +27,42 @@ interface PokemonData {
   image: string;
 }
 
+const typeColors: { [key: string]: string } = {
+  Normal: 'BlanchedAlmond',
+  Feu: 'red',
+  Eau: 'MediumBlue',
+  Plante: 'ForestGreen',
+  Électrik: 'gold',
+  Glace: 'lightblue',
+  Combat: 'orange',
+  Poison: 'purple',
+  Sol: 'brown',
+  Vol: 'lightblue',
+  Psy: 'pink',
+  Insecte: 'GreenYellow',
+  Roche: 'brown',
+  Spectre: 'purple',
+  Dragon: 'darkpurple',
+  Acier: 'grey',
+  Tenebres: 'black',
+  Fée: 'HotPink',
+};
+
+const generationText: { [key: number]: string } = {
+  1: 'Rouge et Vert',
+  2: 'Or et Argent',
+  3: 'Rubis et Saphir',
+  4: 'Diamant et Perle',
+  5: 'Noir et Blanc',
+  6: 'X et Y',
+  7: 'Soleil et Lune',
+  8: 'Épée et Bouclier',
+};
+
+const getTypeColors = (types: string[]): string[] => {
+  return types.map((type) => typeColors[type] || 'black');
+};
+
 const PokemonName = styled.h1`
   color: palevioletred;
   font-size: 4em;
@@ -142,7 +178,12 @@ const DIV = styled.div`
   justify-content: space-between;
 `;
 
-const DEFAULT_MESSAGE = 'Aucune information disponible';
+const Test = styled.span<{ color: string }>`
+  color: ${(props) => props.color};
+  font-size: 1em;
+  text-align: center;
+  margin-bottom: 10px;
+`;
 
 function Pokemon() {
   const { id: PokemonId } = useParams();
@@ -166,6 +207,10 @@ function Pokemon() {
 
   const [prevPokemonName, setPrevPokemonName] = useState<string>('Bulbizarre');
   const [nextPokemonName, setNextPokemonName] = useState<string>('');
+
+  const handleScrollToTop = () => {
+    window.scrollTo(0, 50);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -234,15 +279,36 @@ function Pokemon() {
         <PokemonCard>
           <PokemonName>{name}</PokemonName>
           <PokemonImage src={image} alt={name} />
+
+          <div>
+            <Link to={`/pokemon/${prevPokemonId}`}>
+              <Bouton onClick={handleScrollToTop}>
+                Pokemon précédent : {prevPokemonName}{' '}
+              </Bouton>
+            </Link>
+            <Link to={`/pokemon/${nextPokemonId}`}>
+              <Bouton onClick={handleScrollToTop}>
+                Pokemon suivant : {nextPokemonName}
+              </Bouton>
+            </Link>
+          </div>
+
           <PokemonInfosCard>
             <PokemonInfos>ID: {id}</PokemonInfos>
             <PokemonInfos>
               Type(s):{' '}
-              {apiTypes
-                ? apiTypes.map((type) => type.name).join(', ')
-                : DEFAULT_MESSAGE}
+              {apiTypes.map((type, index) => (
+                <Test key={index} color={getTypeColors([type.name])[0]}>
+                  {type.name}
+                  {index < apiTypes.length - 1 ? ', ' : ''}
+                </Test>
+              ))}
             </PokemonInfos>
-            <PokemonInfos>Génération: {apiGeneration}</PokemonInfos>
+            <PokemonInfos>
+              Génération: {apiGeneration}
+              {generationText[apiGeneration] &&
+                ` (${generationText[apiGeneration]})`}
+            </PokemonInfos>
             <PokemonInfos>Statistiques de base:</PokemonInfos>
             <PokemonInfosList>
               <li>HP: {stats.HP}</li>
@@ -254,15 +320,6 @@ function Pokemon() {
             </PokemonInfosList>
           </PokemonInfosCard>
 
-          <div>
-            <Link to={`/pokemon/${prevPokemonId}`}>
-              <Bouton>Pokemon précédent : {prevPokemonName} </Bouton>
-            </Link>
-            <Link to={`/pokemon/${nextPokemonId}`}>
-              <Bouton>Pokemon suivant : {nextPokemonName}</Bouton>
-            </Link>
-          </div>
-
           <DIV>
             {apiPreEvolution !== null && apiPreEvolution.name && (
               <div>
@@ -270,7 +327,10 @@ function Pokemon() {
                 <ul>
                   <li key={apiPreEvolution.name}></li>
                   <EvolutionCard>
-                    <CustomLink to={`/pokemon/${apiPreEvolution.pokedexIdd}`}>
+                    <CustomLink
+                      to={`/pokemon/${apiPreEvolution.pokedexIdd}`}
+                      onClick={handleScrollToTop}
+                    >
                       <img
                         src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${apiPreEvolution.pokedexIdd}.png`}
                         alt={apiPreEvolution.name}
@@ -290,7 +350,10 @@ function Pokemon() {
                     {apiEvolutions.map((evolution) => (
                       <li key={evolution.name}>
                         <EvolutionCard>
-                          <CustomLink to={`/pokemon/${evolution.pokedexId}`}>
+                          <CustomLink
+                            to={`/pokemon/${evolution.pokedexId}`}
+                            onClick={handleScrollToTop}
+                          >
                             <img
                               src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${evolution.pokedexId}.png`}
                               alt={evolution.name}
