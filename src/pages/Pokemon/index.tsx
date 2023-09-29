@@ -178,7 +178,13 @@ const DIV = styled.div`
   justify-content: space-between;
 `;
 
-const Test = styled.span<{ color: string }>`
+const Test = styled.div`
+  font-size: 1em;
+  text-align: center;
+  margin-bottom: 10px;
+`;
+
+const TestLink = styled(Link)<{ color: string }>`
   color: ${(props) => props.color};
   font-size: 1em;
   text-align: center;
@@ -298,8 +304,14 @@ function Pokemon() {
             <PokemonInfos>
               Type(s):{' '}
               {apiTypes.map((type, index) => (
-                <Test key={index} color={getTypeColors([type.name])[0]}>
-                  {type.name}
+                <Test>
+                  <TestLink
+                    to={`/pokedex/${type.name}`}
+                    key={index}
+                    color={getTypeColors([type.name])[0]}
+                  >
+                    {type.name}
+                  </TestLink>
                   {index < apiTypes.length - 1 ? ', ' : ''}
                 </Test>
               ))}

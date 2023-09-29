@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Card from '../../components/Card';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom'; // Importez useParams
 import styled from 'styled-components';
 import SearchBox from '../../components/SearchBox';
 import Filter from '../../components/Filter';
@@ -39,12 +39,23 @@ const NoMatch = styled.p`
   text-align: center;
 `;
 
+const Button = styled.button`
+  font-size: 3em;
+  background-color: #f3f2ff;
+  border: none;
+  cursor: pointer;
+  margin-left: 20px;
+`;
+
 const Pokedex: React.FC = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [search, setSearch] = useState<string>('');
   const [searchById, setSearchById] = useState<number | null>(null);
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(true);
+  const { type } = useParams(); // Récupérez le paramètre de type de l'URL
+  const [randomPokemon, setRandomPokemon] = useState<Pokemon | null>(null); // Pour stocker le Pokémon aléatoire choisi
+  const [showRandomPokemon, setShowRandomPokemon] = useState(false); // Pour afficher/masquer le Pokémon aléatoire
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,11 +103,24 @@ const Pokedex: React.FC = () => {
 
     return (
       (isMatchingName || isMatchingId) &&
+      (!type || pokemon.types.includes(type)) &&
       (filter === '' ||
         pokemon.types.includes(filter) ||
         pokemon.generation === filter)
     );
   });
+
+  const generateRandomPokemon = () => {
+    // Générer un index aléatoire dans la plage des indices des Pokémon
+    const randomIndex = Math.floor(Math.random() * pokemons.length);
+
+    // Sélectionner le Pokémon aléatoire
+    const randomPokemon = pokemons[randomIndex];
+
+    // Mettre à jour l'état pour afficher le Pokémon aléatoire et masquer les autres
+    setRandomPokemon(randomPokemon);
+    setShowRandomPokemon(true);
+  };
 
   return (
     <PageContainer>
@@ -112,27 +136,45 @@ const Pokedex: React.FC = () => {
         handleChange={handleChange}
       />
 
+      <Button onClick={generateRandomPokemon}>🔄</Button>
+
       {loading ? (
         <Loader />
       ) : (
         <>
+          {randomPokemon && showRandomPokemon && (
+            <CardContainer>
+              <Link to={`/pokemon/${randomPokemon.id}`}>
+                <Card
+                  pokemon={{
+                    id: randomPokemon.id,
+                    name: randomPokemon.name,
+                    types: randomPokemon.types,
+                    generation: randomPokemon.generation,
+                  }}
+                />
+              </Link>
+            </CardContainer>
+          )}
           {filteredPokemons.length === 0 ? (
             <NoMatch>Aucun Pokémon trouvé 😲</NoMatch>
           ) : (
-            <CardContainer>
-              {filteredPokemons.map((pokemon) => (
-                <Link key={pokemon.name} to={`/pokemon/${pokemon.id}`}>
-                  <Card
-                    pokemon={{
-                      id: pokemon.id,
-                      name: pokemon.name,
-                      types: pokemon.types,
-                      generation: pokemon.generation,
-                    }}
-                  />
-                </Link>
-              ))}
-            </CardContainer>
+            !showRandomPokemon && (
+              <CardContainer>
+                {filteredPokemons.map((pokemon) => (
+                  <Link key={pokemon.name} to={`/pokemon/${pokemon.id}`}>
+                    <Card
+                      pokemon={{
+                        id: pokemon.id,
+                        name: pokemon.name,
+                        types: pokemon.types,
+                        generation: pokemon.generation,
+                      }}
+                    />
+                  </Link>
+                ))}
+              </CardContainer>
+            )
           )}
         </>
       )}

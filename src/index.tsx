@@ -41,6 +41,7 @@ ReactDOM.render(
         <Route path="/pokedex" element={<Pokedex />} />
         <Route path="/suggestion" element={<Suggestion />} />
         <Route path="/pokemon/:id" element={<Pokemon />} />
+        <Route path="/pokedex/:type" element={<Pokedex />} />
         <Route path="/team" element={<Team />} />
         <Route path="*" element={<Error />} />
       </Routes>
